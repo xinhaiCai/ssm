@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jackie.dao.StatisticsMapper">
+    <resultMap id="BaseResultMap" type="com.jackie.model.Statistics">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="user_count" property="userCount" jdbcType="INTEGER"/>
+        <result column="grow_user_count" property="growUserCount" jdbcType="INTEGER"/>
+        <result column="active_user_count" property="activeUserCount" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_time, user_count, grow_user_count, active_user_count
+    </sql>
+    <select id="selectByCreateTime" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from seewo_sys_statistics
+        where create_time = #{createTime,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from seewo_sys_statistics
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from seewo_sys_statistics
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.jackie.model.Statistics">
+        insert into seewo_sys_statistics (id, create_time, user_count,
+        grow_user_count, active_user_count)
+        values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{userCount,jdbcType=INTEGER},
+        #{growUserCount,jdbcType=INTEGER}, #{activeUserCount,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.jackie.model.Statistics">
+        insert into seewo_sys_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="userCount != null">
+                user_count,
+            </if>
+            <if test="growUserCount != null">
+                grow_user_count,
+            </if>
+            <if test="activeUserCount != null">
+                active_user_count,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userCount != null">
+                #{userCount,jdbcType=INTEGER},
+            </if>
+            <if test="growUserCount != null">
+                #{growUserCount,jdbcType=INTEGER},
+            </if>
+            <if test="activeUserCount != null">
+                #{activeUserCount,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jackie.model.Statistics">
+        update seewo_sys_statistics
+        <set>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userCount != null">
+                user_count = #{userCount,jdbcType=INTEGER},
+            </if>
+            <if test="growUserCount != null">
+                grow_user_count = #{growUserCount,jdbcType=INTEGER},
+            </if>
+            <if test="activeUserCount != null">
+                active_user_count = #{activeUserCount,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jackie.model.Statistics">
+        update seewo_sys_statistics
+        set create_time = #{createTime,jdbcType=TIMESTAMP},
+        user_count = #{userCount,jdbcType=INTEGER},
+        grow_user_count = #{growUserCount,jdbcType=INTEGER},
+        active_user_count = #{activeUserCount,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

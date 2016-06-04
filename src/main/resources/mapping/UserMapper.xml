@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jackie.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.jackie.model.User">
+        <id column="resource_id" property="resourceId" jdbcType="VARCHAR"/>
+        <result column="unit_id" property="unitId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="cnname" property="cnname" jdbcType="VARCHAR"/>
+        <result column="user_password" property="userPassword" jdbcType="VARCHAR"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="INTEGER"/>
+        <result column="photoURL" property="photourl" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="systemCode" property="systemcode" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="gender" property="gender" jdbcType="TINYINT"/>
+        <result column="creator_id" property="creatorId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="realName" property="realname" jdbcType="VARCHAR"/>
+        <result column="business" property="business" jdbcType="VARCHAR"/>
+        <result column="profession" property="profession" jdbcType="VARCHAR"/>
+        <result column="province_id" property="provinceId" jdbcType="VARCHAR"/>
+        <result column="city_id" property="cityId" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="isBind" property="isbind" jdbcType="SMALLINT"/>
+        <result column="wechat_uid" property="wechatUid" jdbcType="VARCHAR"/>
+        <result column="wechat_isbind" property="wechatIsbind" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        resource_id, unit_id, user_name, cnname, user_password, version, is_deleted, photoURL,
+        phone, email, systemCode, age, gender, creator_id, create_time, realName, business,
+        profession, province_id, city_id, address, isBind, wechat_uid, wechat_isbind, salt
+    </sql>
+    <select id="userCount" resultType="int" parameterType="java.lang.String">
+        select
+        count(*)
+        from seewo_sys_users
+    </select>
+    <select id="activeUserCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select
+        count(*)
+        from seewo_sys_log
+        where create_time = #{createTime,jdbcType=VARCHAR}
+        and action_type = '1111000'
+    </select>
+    <select id="growUserCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select
+        count(*)
+        from seewo_sys_users
+        where create_time = #{createTime,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from seewo_sys_users
+        where user_name = #{userName,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from seewo_sys_users
+        where resource_id = #{resourceId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from seewo_sys_users
+        where resource_id = #{resourceId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.jackie.model.User">
+        insert into seewo_sys_users (resource_id, unit_id, user_name,
+        cnname, user_password, version,
+        is_deleted, photoURL, phone,
+        email, systemCode, age,
+        gender, creator_id, create_time,
+        realName, business, profession,
+        province_id, city_id, address,
+        isBind, wechat_uid, wechat_isbind,
+        salt)
+        values (#{resourceId,jdbcType=VARCHAR}, #{unitId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+        #{cnname,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER},
+        #{isDeleted,jdbcType=INTEGER}, #{photourl,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR}, #{systemcode,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
+        #{gender,jdbcType=TINYINT}, #{creatorId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{realname,jdbcType=VARCHAR}, #{business,jdbcType=VARCHAR}, #{profession,jdbcType=VARCHAR},
+        #{provinceId,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+        #{isbind,jdbcType=SMALLINT}, #{wechatUid,jdbcType=VARCHAR}, #{wechatIsbind,jdbcType=VARCHAR},
+        #{salt,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.jackie.model.User">
+        insert into seewo_sys_users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="resourceId != null">
+                resource_id,
+            </if>
+            <if test="unitId != null">
+                unit_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="cnname != null">
+                cnname,
+            </if>
+            <if test="userPassword != null">
+                user_password,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="photourl != null">
+                photoURL,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="systemcode != null">
+                systemCode,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="creatorId != null">
+                creator_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="realname != null">
+                realName,
+            </if>
+            <if test="business != null">
+                business,
+            </if>
+            <if test="profession != null">
+                profession,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="isbind != null">
+                isBind,
+            </if>
+            <if test="wechatUid != null">
+                wechat_uid,
+            </if>
+            <if test="wechatIsbind != null">
+                wechat_isbind,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="resourceId != null">
+                #{resourceId,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="cnname != null">
+                #{cnname,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="photourl != null">
+                #{photourl,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="systemcode != null">
+                #{systemcode,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=INTEGER},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=TINYINT},
+            </if>
+            <if test="creatorId != null">
+                #{creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="realname != null">
+                #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="business != null">
+                #{business,jdbcType=VARCHAR},
+            </if>
+            <if test="profession != null">
+                #{profession,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="isbind != null">
+                #{isbind,jdbcType=SMALLINT},
+            </if>
+            <if test="wechatUid != null">
+                #{wechatUid,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatIsbind != null">
+                #{wechatIsbind,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jackie.model.User">
+        update seewo_sys_users
+        <set>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="cnname != null">
+                cnname = #{cnname,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                user_password = #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=INTEGER},
+            </if>
+            <if test="photourl != null">
+                photoURL = #{photourl,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="systemcode != null">
+                systemCode = #{systemcode,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                age = #{age,jdbcType=INTEGER},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=TINYINT},
+            </if>
+            <if test="creatorId != null">
+                creator_id = #{creatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="realname != null">
+                realName = #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="business != null">
+                business = #{business,jdbcType=VARCHAR},
+            </if>
+            <if test="profession != null">
+                profession = #{profession,jdbcType=VARCHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="isbind != null">
+                isBind = #{isbind,jdbcType=SMALLINT},
+            </if>
+            <if test="wechatUid != null">
+                wechat_uid = #{wechatUid,jdbcType=VARCHAR},
+            </if>
+            <if test="wechatIsbind != null">
+                wechat_isbind = #{wechatIsbind,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where resource_id = #{resourceId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jackie.model.User">
+        update seewo_sys_users
+        set unit_id = #{unitId,jdbcType=VARCHAR},
+        user_name = #{userName,jdbcType=VARCHAR},
+        cnname = #{cnname,jdbcType=VARCHAR},
+        user_password = #{userPassword,jdbcType=VARCHAR},
+        version = #{version,jdbcType=INTEGER},
+        is_deleted = #{isDeleted,jdbcType=INTEGER},
+        photoURL = #{photourl,jdbcType=VARCHAR},
+        phone = #{phone,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        systemCode = #{systemcode,jdbcType=VARCHAR},
+        age = #{age,jdbcType=INTEGER},
+        gender = #{gender,jdbcType=TINYINT},
+        creator_id = #{creatorId,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        realName = #{realname,jdbcType=VARCHAR},
+        business = #{business,jdbcType=VARCHAR},
+        profession = #{profession,jdbcType=VARCHAR},
+        province_id = #{provinceId,jdbcType=VARCHAR},
+        city_id = #{cityId,jdbcType=VARCHAR},
+        address = #{address,jdbcType=VARCHAR},
+        isBind = #{isbind,jdbcType=SMALLINT},
+        wechat_uid = #{wechatUid,jdbcType=VARCHAR},
+        wechat_isbind = #{wechatIsbind,jdbcType=VARCHAR},
+        salt = #{salt,jdbcType=VARCHAR}
+        where resource_id = #{resourceId,jdbcType=VARCHAR}
+    </update>
+</mapper>

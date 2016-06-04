@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                        http://www.springframework.org/schema/mvc
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+    <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
+    <context:component-scan base-package="com.jackie.controller"/>
+    <!--启用注解-->
+    <mvc:annotation-driven>
+        <!-- 解决@ResponseBody返回的中文乱码问题-->
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!--配置静态文件访问路径和jsp的视图解析器和前后缀-->
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/image/**" location="/image/"/>
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!--开启spring的自动代理-->
+    <aop:aspectj-autoproxy/>
+    <!--配置切面：用于拦截并给每个controller类的方法进行计时-->
+    <bean id="methodTimeInterceptor" class="com.jackie.interceptor.MethodTimeInterceptor"/>
+    <bean id="methodTimePointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice" ref="methodTimeInterceptor"/>
+        <property name="pattern" value=".*Controller.*"/>
+    </bean>
+</beans>
